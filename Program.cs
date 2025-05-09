@@ -10,8 +10,8 @@ using Newtonsoft.Json.Linq;
 
 class Program
 {
-    private static readonly string API_KEY_GOOGLE = "AIzaSyDiadIn9rLT9XEdb4S9UIY7-2lXmazFfn4";
-    private static readonly string API_KEY_VIRUSTOTAL = "7628a1e418a59e90b1c7f33c63bdfe51cf1f6a91225892d65eea63453586fc98";
+    private static readonly string API_KEY_GOOGLE = "";
+    private static readonly string API_KEY_VIRUSTOTAL = "";
     private static HashSet<string> blacklistedUrls = new HashSet<string>();
 
     static async Task Main(string[] args)
@@ -123,11 +123,24 @@ class Program
             return (true, "IP adresi içeriyor.");
         if (url.Split('-').Length > 3)
             return (true, "'-' karakteri fazla.");
-        string[] keywords = { "login", "update", "verify", "secure", "webscr", "paypal", "banking" };
+
+        string[] keywords = {
+        "login", "update", "verify", "secure", "webscr", "paypal", "banking",
+        "signin", "account", "confirm", "submit", "security", "ebay", "amazon",
+        "apple", "google", "support", "help", "invoice", "alert", "password",
+        "user", "profile", "auth", "authentication", "reset", "recover", "dropbox",
+        "drive", "docs", "outlook", "office365", "microsoft", "cloud", "storage",
+        "mail", "sms", "phone", "service", "transaction", "wallet", "bitcoin",
+        "crypto", "metamask", "coinbase", "binance", "weebly", "webflow", "free",
+        "bonus", "promo", "offer", "virus", "download" , "malware.html" // test URL için özel keyword
+    };
+
         foreach (var word in keywords)
             if (url.ToLower().Contains(word)) return (true, $"Şüpheli kelime: {word}");
+
         if (url.Length > 75)
             return (true, "URL çok uzun.");
+
         return (false, "Temiz");
     }
 
